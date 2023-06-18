@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "hikari"
+version = "0.1.0"
+description = "一个基于fastapi开发、为动漫影视而生的cms系统"
+authors = ["MapleLeafTeam sys@mplteam.cn"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.97.0"
+uvicorn = "^0.22.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
