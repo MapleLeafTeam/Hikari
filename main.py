@@ -12,7 +12,7 @@ class Item(BaseModel): #define video source's stucte
 app = FastAPI() #init app
 
 
-@app.get("/videos/{video_id}") #start a api for get videos
+@app.get("/apis/get_video/{video_id}") #start a api for get videos
 async def read_item(video_id: int):
     for i in range(len(datebase)):
             if i == video_id:
@@ -21,6 +21,6 @@ async def read_item(video_id: int):
     return {"source": i}
 
 
-@app.post("/videos", response_model=Item) #start a api for add video sources
+@app.post("/apis/add_source", response_model=Item) #start a api for add video sources
 async def create_item(item: Item):
     return item
