@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from typing import Union
 from pydantic import BaseModel
-
+import psycopg2
 
 class Item(BaseModel): #define video source's stucte
     name: str
@@ -14,10 +14,13 @@ app = FastAPI() #init app
 
 @app.get("/videos/{video_id}") #start a api for get videos
 async def read_item(video_id: int):
-    return {"video_id": video_id}
+    for i in range(len(datebase)):
+            if i == video_id:
+                 video_source = i
+
+    return {"source": i}
 
 
 @app.post("/videos", response_model=Item) #start a api for add video sources
 async def create_item(item: Item):
-    print(item)
     return item
