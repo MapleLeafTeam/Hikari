@@ -1,57 +1,42 @@
-import psycopg2
+import asyncio
+import asyncpg
 import yaml
 
-def load_config():
-    # 从配置文件中加载数据库连接信息
-    with open("config.yaml", "r") as f:
-        config = yaml.safe_load(f)
-    return config
+config = yaml.safe_load(open("config.yaml"))
 
-config = load_config()
+async def create_tables():
+    conn = await asyncpg.connect(
+        host=config["database"]["host"],
+        port=config["database"]["port"],
+        user=config["database"]["user"],
+        password=config["database"]["password"],
+        database=config["database"]["database"],
+    )
 
-# 获取数据库连接信息
-db_host = config["database"]["host"]
-db_name = config["database"]["database"]
-db_user = config["database"]["user"]
-db_password = config["database"]["password"]
+    # 创建动漫数据表
+    await conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS anime (
+            id SERIAL PRIMARY KEY,
+            type VARCHAR(255),
+            description TEXT,
+            status VARCHAR(255),
+            playback_link VARCHAR(255)
+        )
+        """
+    )
 
-# 创建数据库连接
-conn = psycopg2.connect(
-    host=db_host,
-    database=db_name,
-    user=db_user,
-    password=db_password
-)
+    # 创建用户数据表
+    await conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS users (
+            id SERIAL PRIMARY KEY,
+            username VARCHAR(255),
+            password VARCHAR(255)
+        )
+        """
+    )
 
-# 创建游标对象
-cur = conn.cursor()
+    await conn.close()
 
-# 创建动漫数据表
-cur.execute("""
-    CREATE TABLE IF NOT EXISTS anime (
-        id SERIAL PRIMARY KEY,
-        name TEXT NOT NULL,
-        type TEXT NOT NULL,
-        description TEXT,
-        status TEXT,
-        play_url TEXT
-    );
-""")
-
-# 创建用户数据表
-cur.execute("""
-    CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        username TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
-    );
-""")
-
-# 提交事务
-conn.commit()
-
-# 关闭游标和连接
-cur.close()
-conn.close()
-
-print("Anime table created successfully.")
+asyncio.run(create_tables())
