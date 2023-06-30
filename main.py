@@ -1,8 +1,8 @@
 import os
 from importlib import import_module
 from fastapi import FastAPI
-from app.routes import auth, anime
-from app.database import create_pool
+from routes import auth, anime
+from database import create_pool
 
 app = FastAPI()
 
@@ -33,4 +33,4 @@ async def startup():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=8080,reload=False)

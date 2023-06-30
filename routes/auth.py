@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from passlib.context import CryptContext
-from app.models import User, UserCreate, UserLogin
-from app.database import get_connection
+from models import User, UserCreate, UserLogin
+from database import get_connection
 
 router = APIRouter()
 

@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
-from app.models import Anime
-from app.database import get_connection
+from models import Anime
+from database import get_connection
 
 router = APIRouter()
 
