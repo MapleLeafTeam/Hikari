@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Depends
-from app.models import Anime
 from app.database import get_connection
 
 
