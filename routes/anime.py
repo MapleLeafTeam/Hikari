@@ -5,7 +5,7 @@ from app.database import get_connection
 router = APIRouter()
 
 
-@router.get("/anime/{anime_id}")
+@router.get("/apis/anime/{anime_id}")
 async def get_anime(anime_id: int, conn=Depends(get_connection)):
     # 获取动漫信息的逻辑
     query = "SELECT * FROM anime WHERE id = $1"
@@ -17,7 +17,7 @@ async def get_anime(anime_id: int, conn=Depends(get_connection)):
     return anime.dict()
 
 
-@router.get("/anime")
+@router.get("/apis/anime")
 async def get_anime_list(conn=Depends(get_connection)):
     # 获取动漫列表的逻辑
     query = "SELECT * FROM anime"
