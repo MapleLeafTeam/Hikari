@@ -1,4 +1,4 @@
-[![somna-2-89315296-p0.jpg](https://i.postimg.cc/JzRtzJV3/somna-2-89315296-p0.jpg)](https://postimg.cc/RNbvPW0q)
+[![74751807-p1-master1200.jpg](https://i.postimg.cc/jd3dt1cT/74751807-p1-master1200.jpg)](https://postimg.cc/LnfMVNGQ)
 # Hikari
 
 Hikari是一个基于 FastAPI 开发、为动漫影视而生的 CMS 系统。
