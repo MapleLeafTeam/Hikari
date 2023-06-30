@@ -38,5 +38,5 @@ async def create_tables():
     )
 
     await conn.close()
-
 asyncio.run(create_tables())
+print("finish")
