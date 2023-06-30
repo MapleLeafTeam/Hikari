@@ -17,12 +17,13 @@ if os.path.isdir(plugins_dir):
         if os.path.isdir(plugin_path):
             try:
                 plugin_module = import_module(f"plugins.{plugin_name}.main")
-                if hasattr(plugin_module, "register"):
-                    plugin_module.register(app)
+                if hasattr(plugin_module, "router"):
+                    app.include_router(plugin_module.router)
                 else:
-                    print(f"Plugin {plugin_name} does not have a register function.")
+                    print(f"Plugin {plugin_name} does not have a router.")
             except ImportError:
                 print(f"Failed to import plugin {plugin_name}.")
+
 
 
 @app.on_event("startup")
