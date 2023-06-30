@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from passlib.context import CryptContext
-from models import User, UserCreate, UserLogin
+from models import User, UserCreate, UserLogin,Favorite, FavoriteCreate, PlayHistory, PlayHistoryCreate
 from database import get_connection
 
 router = APIRouter()
@@ -30,3 +30,36 @@ async def login_user(user_data: UserLogin, conn=Depends(get_connection)):
         return {"message": "Invalid username or password"}
 
     return {"message": "Login successful", "username": username}
+
+@router.post("/apis/users/{user_id}/favorites")
+async def create_favorite(user_id: int, favorite_data: FavoriteCreate, conn=Depends(get_connection)):
+    # 创建收藏的逻辑
+    query = "INSERT INTO favorites (user_id, anime_id) VALUES ($1, $2)"
+    await conn.execute(query, user_id, favorite_data.anime_id)
+    return {"message": "Favorite created successfully"}
+
+
+@router.get("/apis/users/{user_id}/favorites")
+async def get_favorites(user_id: int, conn=Depends(get_connection)):
+    # 获取用户收藏的逻辑
+    query = "SELECT * FROM favorites WHERE user_id = $1"
+    results = await conn.fetch(query, user_id)
+    favorites = [Favorite(**result).dict() for result in results]
+    return favorites
+
+
+@router.post("/apis/users/{user_id}/play_history")
+async def create_play_history(user_id: int, play_history_data: PlayHistoryCreate, conn=Depends(get_connection)):
+    # 创建播放记录的逻辑
+    query = "INSERT INTO play_history (user_id, anime_id) VALUES ($1, $2)"
+    await conn.execute(query, user_id, play_history_data.anime_id)
+    return {"message": "Play history created successfully"}
+
+
+@router.get("/apis/users/{user_id}/play_history")
+async def get_play_history(user_id: int, conn=Depends(get_connection)):
+    # 获取用户播放记录的逻辑
+    query = "SELECT * FROM play_history WHERE user_id = $1"
+    results = await conn.fetch(query, user_id)
+    play_history = [PlayHistory(**result).dict() for result in results]
+    return play_history

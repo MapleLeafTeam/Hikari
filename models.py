@@ -21,3 +21,47 @@ class UserCreate(BaseModel):
 class UserLogin(BaseModel):
     username: str
     password: str
+
+
+class Comment(BaseModel):
+    id: int
+    user_id: int
+    anime_id: int
+    comment: str
+
+
+class CommentCreate(BaseModel):
+    user_id: int
+    comment: str
+
+
+class Rating(BaseModel):
+    id: int
+    user_id: int
+    anime_id: int
+    rating: float
+
+
+class RatingCreate(BaseModel):
+    user_id: int
+    rating: float
+
+
+class Favorite(BaseModel):
+    id: int
+    user_id: int
+    anime_id: int
+
+
+class FavoriteCreate(BaseModel):
+    anime_id: int
+
+
+class PlayHistory(BaseModel):
+    id: int
+    user_id: int
+    anime_id: int
+
+
+class PlayHistoryCreate(BaseModel):
+    anime_id: int
