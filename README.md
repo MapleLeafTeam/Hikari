@@ -1,4 +1,3 @@
-```markdown
 # Hikari
 
 Hikari是一个基于 FastAPI 开发、为动漫影视而生的 CMS 系统。
