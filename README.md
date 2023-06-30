@@ -1,7 +1,7 @@
 # Hikari
 
 Hikari是一个基于 FastAPI 开发、为动漫影视而生的 CMS 系统。
-
+[![somna-2-89315296-p0.jpg](https://i.postimg.cc/JzRtzJV3/somna-2-89315296-p0.jpg)](https://postimg.cc/RNbvPW0q)
 ## 功能特点
 
 - 提供动漫影视的管理功能，包括添加、编辑、删除等操作。
