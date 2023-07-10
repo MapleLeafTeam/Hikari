@@ -1,4 +1,3 @@
-[![74751807-p1-master1200.jpg](https://i.postimg.cc/jd3dt1cT/74751807-p1-master1200.jpg)](https://postimg.cc/LnfMVNGQ)
 # Hikari
 
 Hikari是一个基于 FastAPI 开发、为动漫影视而生的 CMS 系统。
