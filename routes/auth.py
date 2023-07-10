@@ -12,8 +12,10 @@ from models import (
     PlayHistoryCreate,
 )
 from database import get_connection
+from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
+templates = Jinja2Templates(directory="templates")
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -29,7 +31,7 @@ async def register_user(user_data: UserCreate, conn=Depends(get_connection)):
 
 @router.post("/apis/login")
 async def login_user(
-    user_data: UserLogin, conn=Depends(get_connection), request=Request
+    request: Request, user_data: UserLogin, conn=Depends(get_connection)
 ):
     # 用户登录逻辑
     query = "SELECT username, password FROM users WHERE username = $1"
@@ -84,3 +86,13 @@ async def get_play_history(user_id: int, conn=Depends(get_connection)):
     results = await conn.fetch(query, user_id)
     play_history = [PlayHistory(**result).dict() for result in results]
     return play_history
+
+
+@router.get("/register")
+async def register_page(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
+
+
+@router.get("/login")
+async def login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
