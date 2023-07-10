@@ -21,3 +21,7 @@ async def get_anime(anime_id: int, conn=Depends(get_connection)):
         return {"message": "Anime not found"}
     anime = Anime(**result)
     return templates.TemplateResponse("anime_details.html", {"request": request, "anime": anime})
+
+@router.get("/register")
+async def register_page(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
