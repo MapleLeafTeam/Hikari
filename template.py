@@ -1,18 +1,17 @@
-from fastapi import Depends, APIRouter, Request
+from fastapi import APIRouter, Depends, Request
+from fastapi.templating import Jinja2Templates
 from database import get_connection
 from models import Anime
 import os
-from fastapi.templating import Jinja2Templates
 
 router = APIRouter()
 t_dir = os.path.dirname(os.path.abspath(__file__))
 t_path = os.path.join(t_dir, "templates")
 templates = Jinja2Templates(directory=t_path)
-request = Request
 
 
 @router.get("/")
-async def get_anime_list(conn=Depends(get_connection)):
+async def get_anime_list(request: Request, conn=Depends(get_connection)):
     query = "SELECT * FROM anime"
     results = await conn.fetch(query)
     anime_list = [Anime(**result).dict() for result in results]
@@ -22,7 +21,7 @@ async def get_anime_list(conn=Depends(get_connection)):
 
 
 @router.get("/anime/{anime_id}")
-async def get_anime(anime_id: int, conn=Depends(get_connection)):
+async def get_anime(anime_id: int, request: Request, conn=Depends(get_connection)):
     query = "SELECT * FROM anime WHERE id = $1"
     result = await conn.fetchrow(query, anime_id)
     if result is None:
