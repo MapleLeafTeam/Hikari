@@ -31,7 +31,7 @@ async def register_user(user_data: UserCreate, conn=Depends(get_connection)):
 
 @router.post("/apis/login")
 async def login_user(
-    user_data: UserLogin, conn=Depends(get_connection), request: Request
+    request: Request, user_data: UserLogin, conn=Depends(get_connection)
 ):
     # 用户登录逻辑
     query = "SELECT username, password FROM users WHERE username = $1"
