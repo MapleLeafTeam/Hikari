@@ -3,11 +3,13 @@ from importlib import import_module
 from fastapi import FastAPI
 from routes import auth, anime
 from database import create_pool
+from template import router as template_router
 
 app = FastAPI()
 
 app.include_router(auth.router)
 app.include_router(anime.router)
+app.include_router(template_router)
 
 # 加载插件
 plugins_dir = "plugins"
@@ -25,7 +27,6 @@ if os.path.isdir(plugins_dir):
                 print(f"Failed to import plugin {plugin_name}.")
 
 
-
 @app.on_event("startup")
 async def startup():
     await create_pool()
@@ -34,4 +35,4 @@ async def startup():
 if __name__ == "__main__":
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8080,reload=False)
+    uvicorn.run(app, host="0.0.0.0", port=8080, reload=False)
