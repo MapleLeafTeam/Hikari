@@ -4,15 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>注册页面</title>
+    <title>登录页面</title>
     <!-- 引入Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 
 <body>
     <div class="container">
-        <h1>注册</h1>
-        <form id="registerForm" action="/apis/register" method="POST">
+        <h1>登录</h1>
+        <form id="loginForm" action="/apis/login" method="POST">
             <div class="mb-3">
                 <label for="username" class="form-label">用户名</label>
                 <input type="text" class="form-control" id="username" name="username" required>
@@ -21,14 +21,14 @@
                 <label for="password" class="form-label">密码</label>
                 <input type="password" class="form-control" id="password" name="password" required>
             </div>
-            <button type="submit" class="btn btn-primary">注册</button>
+            <button type="submit" class="btn btn-primary">登录</button>
         </form>
     </div>
 
     <!-- 引入Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        document.getElementById("registerForm").addEventListener("submit", function (event) {
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
             event.preventDefault(); // 阻止默认的表单提交行为
 
             // 创建一个 JSON 对象，包含用户名和密码
@@ -38,7 +38,7 @@
             };
 
             // 使用 fetch 函数发送 POST 请求，将 JSON 数据作为请求体发送
-            fetch("/apis/register", {
+            fetch("/apis/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -46,11 +46,11 @@
                 body: JSON.stringify(userData)
             }).then(function (response) {
                 if (response.ok) {
-                    // 注册成功，跳转到登录页面
-                    window.location.href = "/login";
+                    // 登录成功，跳转到主界面
+                    window.location.href = "/"; // 修改为主界面的 URL
                 } else {
-                    // 注册失败，显示错误消息
-                    alert("注册失败");
+                    // 登录失败，显示错误消息
+                    alert("登录失败");
                 }
             }).catch(function (error) {
                 // 处理错误

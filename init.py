@@ -1,8 +1,12 @@
 import asyncio
 import asyncpg
+import os
 import yaml
 
-config = yaml.safe_load(open("config.yaml"))
+script_dir = os.path.dirname(os.path.abspath(__file__))
+config_path = os.path.join(script_dir, "config.yaml")
+config = yaml.safe_load(open(config_path))
+
 
 async def create_tables():
     conn = await asyncpg.connect(
@@ -38,5 +42,7 @@ async def create_tables():
     )
 
     await conn.close()
+
+
 asyncio.run(create_tables())
 print("finish")

@@ -1,6 +1,16 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Request, Depends
 from passlib.context import CryptContext
-from models import User, UserCreate, UserLogin,Favorite, FavoriteCreate, PlayHistory, PlayHistoryCreate
+from fastapi.responses import RedirectResponse
+from starlette import status
+from models import (
+    User,
+    UserCreate,
+    UserLogin,
+    Favorite,
+    FavoriteCreate,
+    PlayHistory,
+    PlayHistoryCreate,
+)
 from database import get_connection
 
 router = APIRouter()
@@ -18,7 +28,9 @@ async def register_user(user_data: UserCreate, conn=Depends(get_connection)):
 
 
 @router.post("/apis/login")
-async def login_user(user_data: UserLogin, conn=Depends(get_connection)):
+async def login_user(
+    user_data: UserLogin, conn=Depends(get_connection), request=Request
+):
     # 用户登录逻辑
     query = "SELECT username, password FROM users WHERE username = $1"
     result = await conn.fetchrow(query, user_data.username)
@@ -29,10 +41,17 @@ async def login_user(user_data: UserLogin, conn=Depends(get_connection)):
     if not pwd_context.verify(user_data.password, hashed_password):
         return {"message": "Invalid username or password"}
 
-    return {"message": "Login successful", "username": username}
+    # 设置登录会话
+    request.session["username"] = username
+
+    # 重定向到主页
+    return RedirectResponse(url="/home", status_code=status.HTTP_302_FOUND)
+
 
 @router.post("/apis/users/{user_id}/favorites")
-async def create_favorite(user_id: int, favorite_data: FavoriteCreate, conn=Depends(get_connection)):
+async def create_favorite(
+    user_id: int, favorite_data: FavoriteCreate, conn=Depends(get_connection)
+):
     # 创建收藏的逻辑
     query = "INSERT INTO favorites (user_id, anime_id) VALUES ($1, $2)"
     await conn.execute(query, user_id, favorite_data.anime_id)
@@ -49,7 +68,9 @@ async def get_favorites(user_id: int, conn=Depends(get_connection)):
 
 
 @router.post("/apis/users/{user_id}/play_history")
-async def create_play_history(user_id: int, play_history_data: PlayHistoryCreate, conn=Depends(get_connection)):
+async def create_play_history(
+    user_id: int, play_history_data: PlayHistoryCreate, conn=Depends(get_connection)
+):
     # 创建播放记录的逻辑
     query = "INSERT INTO play_history (user_id, anime_id) VALUES ($1, $2)"
     await conn.execute(query, user_id, play_history_data.anime_id)
